@@ -345,23 +345,25 @@ public class Player : MonoBehaviour
         transform.LookAt(transform.position + moveVec);
 
         //#2. 마우스에 의한 회전 값
-        if (isAttackIP)
-        {
-            Ray ray = followCamera.ScreenPointToRay(Input.mousePosition);
-            RaycastHit rayHit;
-            if (Physics.Raycast(ray, out rayHit, 100))
-            {
-                Vector3 nextVec = rayHit.point - transform.position;
-                nextVec.y = 0;
-                transform.LookAt(transform.position + nextVec);
-            }
-        }
+        //if (isAttackIP)
+        //{
+        //    Ray ray = followCamera.ScreenPointToRay(Input.mousePosition);
+        //    RaycastHit rayHit;
+        //    if (Physics.Raycast(ray, out rayHit, 100))
+        //    {
+        //        Vector3 nextVec = rayHit.point - transform.position;
+        //        nextVec.y = 0;
+        //        transform.LookAt(transform.position + nextVec);
+        //    }
+        //}
     }
 
     void Attack()
     {
         if (equipWeapon == null)
             return;
+
+
 
         switch (equipWeapon.GetWeaponType)
         {
@@ -376,7 +378,17 @@ public class Player : MonoBehaviour
                 break;
         }
         if (isAttackIP == false)
+        {
+            Ray ray = followCamera.ScreenPointToRay(Input.mousePosition);
+            RaycastHit rayHit;
+            if (Physics.Raycast(ray, out rayHit, 100))
+            {
+                Vector3 nextVec = rayHit.point - transform.position;
+                nextVec.y = 0;
+                transform.LookAt(transform.position + nextVec);
+            }
             currentAttackCount++;
+        }
         isAttackIP = true;
         fireDelay = 0;
     }
