@@ -114,7 +114,7 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        if (isDie)
+        if (isDie || isDamage)
         {
             return;
         }
@@ -180,6 +180,8 @@ public class Player : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
+        if (isDamage) return;
+
         if (other.CompareTag(ConstantManager.TAG_ITEM))   // 아이템과 충돌 시
         {
             Item item = other.GetComponent<Item>();
@@ -221,7 +223,6 @@ public class Player : MonoBehaviour
             if (other.GetComponentInParent<EnemyBase>() == null) return;
 
             var _enemy = other.GetComponentInParent<EnemyBase>();
-            isDamage = true;
             OnDamagePlayer(_enemy.GetDamageValue);  // 유저 hp 감소
         }
 
@@ -230,7 +231,6 @@ public class Player : MonoBehaviour
             if (other.GetComponent<Bullet>() == null) return;
 
             var _bullet = other.GetComponent<Bullet>();
-            isDamage = true;
             OnDamagePlayer(_bullet.GetDamage);
 
             Destroy(_bullet.gameObject);
@@ -257,6 +257,7 @@ public class Player : MonoBehaviour
 
     private void OnDamagePlayer(float _value)
     {
+        isDamage = true;
         if (isAttackIP)
         {
             AttackEnd(true);
@@ -271,6 +272,11 @@ public class Player : MonoBehaviour
             isDie = true;
             myAnim.SetTrigger("doDie");
         }
+    }
+
+    public void DamagedEnd()
+    {
+        isDamage = false;
     }
 
     void GetInput()

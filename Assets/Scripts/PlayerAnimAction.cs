@@ -41,4 +41,10 @@ public class PlayerAnimAction : MonoBehaviour
             playerBase.AttackEffectStart();
     }
 
+    public void DamagedEnd()
+    {
+        if (playerBase != null)
+            playerBase.DamagedEnd();
+    }
+
 }
